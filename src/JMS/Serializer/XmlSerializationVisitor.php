@@ -277,6 +277,26 @@ class XmlSerializationVisitor extends AbstractVisitor
         $this->hasValue = false;
     }
 
+    public function addData($key, $value)
+    {
+        $visitor = new static($this->namingStrategy);
+        $context = new SerializationContext();
+        $context->initialize(
+            'xml',
+            $visitor,
+            $this->navigator,
+            $this->navigator->getMetadataFactory()
+        );
+
+        $visitor->setNavigator($this->navigator);
+        $visitor->setDefaultRootName($key);
+        $this->navigator->accept($visitor->prepare($value), null, $context);
+
+        $this->currentNode->appendChild(
+            $this->document->importNode($visitor->document->documentElement, true)
+        );
+    }
+
     public function endVisitingObject(ClassMetadata $metadata, $data, array $type, Context $context)
     {
     }

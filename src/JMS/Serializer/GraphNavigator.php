@@ -76,6 +76,11 @@ final class GraphNavigator
         $this->objectConstructor = $objectConstructor;
     }
 
+    public function getMetadataFactory()
+    {
+        return $this->metadataFactory;
+    }
+
     /**
      * Called for each node of the graph that is being traversed.
      *
